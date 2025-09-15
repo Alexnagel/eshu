@@ -128,7 +128,7 @@ services:
     restart: unless-stopped
 
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:4.5.1-ls221
+    image: lscr.io/linuxserver/sabnzbd:4.5.3-ls229
     container_name: sabnzbd
     environment:
       - PUID=1000
