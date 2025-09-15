@@ -36,7 +36,7 @@ services:
       - "/home/alex/.local/share/signal-cli-config:/home/.local/share/signal-cli" #map "signal-cli-config" folder on host system into docker container. the folder contains the password and cryptographic keys when a new number is registered
 
   diun:
-    image: crazymax/diun:4.29.0
+    image: crazymax/diun:4.30.0
     hostname: diun
     command: serve
     volumes:
