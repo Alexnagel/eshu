@@ -50,7 +50,7 @@ services:
     restart: always
 
   deluge:
-      image: lscr.io/linuxserver/deluge:2.2.0-r0-ls326 
+      image: lscr.io/linuxserver/deluge:2.2.0 
       container_name: deluge
       environment:
         - PUID=1000
