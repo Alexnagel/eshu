@@ -25,7 +25,7 @@ services:
     restart: unless-stopped
 
   signal-rest:
-    image: bbernhard/signal-cli-rest-api:0.94
+    image: bbernhard/signal-cli-rest-api:0.95
     restart: unless-stopped
     environment:
       - MODE=normal #supported modes: json-rpc, native, normal
