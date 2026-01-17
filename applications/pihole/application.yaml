@@ -17,15 +17,11 @@ spec:
       values: |
         serviceDns:
           type: LoadBalancer
-          loadBalancerIP: ""  # Let MetalLB assign from pool
-          annotations:
-            metallb.universe.tf/allow-shared-ip: pihole
+          loadBalancerIP: "192.168.1.240"
         
         serviceWeb:
           type: LoadBalancer
-          loadBalancerIP: ""  # Same IP as DNS service
-          annotations:
-            metallb.universe.tf/allow-shared-ip: pihole
+          loadBalancerIP: "192.168.1.240"
           http:
             enabled: true
             port: 80
@@ -40,7 +36,6 @@ spec:
           existingSecret: "pihole-password"
           passwordKey: "password"
         
-        # Customize these settings as needed
         DNS1: "8.8.8.8"
         DNS2: "8.8.4.4"
         
