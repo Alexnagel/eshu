@@ -1,0 +1,22 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: default-pool
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  addresses:
+    # Update this IP range to match your local network
+    - 192.168.1.240-192.168.1.250
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: default-l2
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  ipAddressPools:
+    - default-pool
