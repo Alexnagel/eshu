@@ -1,0 +1,11 @@
+# Secrets - do not commit
+applications/*/secrets.yaml
+applications/*/secret.yaml
+*.secret.yaml
+argocd-repo-secret.yaml
+argocd-repo-github-app.yaml
+*.pem
+*.key
+
+# Optional: ignore all secrets directories
+secrets/

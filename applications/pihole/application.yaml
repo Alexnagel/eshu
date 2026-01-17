@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pihole
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://mojo2600.github.io/pihole-kubernetes
+    chart: pihole
+    targetRevision: 2.26.1
+    helm:
+      values: |
+        serviceDns:
+          type: LoadBalancer
+          loadBalancerIP: ""  # Let MetalLB assign from pool
+          annotations:
+            metallb.universe.tf/allow-shared-ip: pihole
+        
+        serviceWeb:
+          type: LoadBalancer
+          loadBalancerIP: ""  # Same IP as DNS service
+          annotations:
+            metallb.universe.tf/allow-shared-ip: pihole
+          http:
+            enabled: true
+            port: 80
+          https:
+            enabled: false
+        
+        persistentVolumeClaim:
+          enabled: true
+          size: 500Mi
+        
+        admin:
+          existingSecret: "pihole-password"
+          passwordKey: "password"
+        
+        # Customize these settings as needed
+        DNS1: "8.8.8.8"
+        DNS2: "8.8.4.4"
+        
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: pihole
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
