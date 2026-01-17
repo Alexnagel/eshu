@@ -12,6 +12,7 @@ spec:
     chart: argo-cd
     targetRevision: 7.7.12
     helm:
+      releaseName: argocd
       values: |
         global:
           domain: argocd.local
