@@ -35,6 +35,8 @@ persistence:
     size: 20Gi
     storageClass: local-path
 
+runtimeClassName: nvidia
+
 pms:
   gpu:
     nvidia:
