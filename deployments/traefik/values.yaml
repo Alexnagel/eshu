@@ -44,6 +44,17 @@ ingressRoute:
 
 providers:
   kubernetesCRD:
+    enabled: true
+    allowCrossNamespace: true
+  kubernetesIngress:
+    enabled: true
+    allowExternalNameServices: true
+    publishedService:
+      enabled: true
+
+globalArguments:
+  - "--global.checknewversion"
+
 additionalArguments:
   - "--certificatesresolvers.transip.acme.email=admin@nagelkerke.net"
   - "--certificatesresolvers.transip.acme.dnschallenge.provider=transip"
@@ -61,17 +72,6 @@ volumes:
   - name: transip-key
     mountPath: "/transip"
     type: secret
-
-    enabled: true
-    allowCrossNamespace: true
-  kubernetesIngress:
-    enabled: true
-    allowExternalNameServices: true
-    publishedService:
-      enabled: true
-
-globalArguments:
-  - "--global.checknewversion"
 
 persistence:
   enabled: true
