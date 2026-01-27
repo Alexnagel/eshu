@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
+      chart: plex-media-server
+      targetRevision: 0.4.0
+      helm:
+        releaseName: plex
+        valueFiles:
+          - $values/deployments/plex/values.yaml
+    - repoURL: https://github.com/alexnagel/eshu.git
+      targetRevision: main
+      ref: values
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: plex
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
