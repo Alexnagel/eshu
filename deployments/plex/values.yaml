@@ -5,7 +5,7 @@ service:
   type: LoadBalancer
   port: 32400
   annotations:
-    metallb.universe.tf/loadBalancerIPs: "192.168.1.241"
+    metallb.universe.tf/loadBalancerIPs: "192.168.1.242"
 
 extraVolumes:
   - name: hecate
