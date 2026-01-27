@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: pihole-secure
+  namespace: pihole
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`pihole.nagelkerke.net`)
+      kind: Rule
+      services:
+        - name: pihole-web
+          port: 80
+  tls:
+    certResolver: transip

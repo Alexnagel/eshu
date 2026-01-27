@@ -20,6 +20,9 @@ spec:
     - repoURL: https://github.com/alexnagel/eshu.git
       targetRevision: HEAD
       ref: values
+    - repoURL: https://github.com/alexnagel/eshu.git
+      targetRevision: HEAD
+      path: deployments/pihole
   
   destination:
     server: https://kubernetes.default.svc
