@@ -1,0 +1,35 @@
+serviceDns:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+  type: LoadBalancer
+  loadBalancerIP: "192.168.1.240"
+
+serviceWeb:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+  type: LoadBalancer
+  loadBalancerIP: "192.168.1.240"
+  http:
+    enabled: true
+    port: 80
+  https:
+    enabled: false
+
+persistentVolumeClaim:
+  enabled: true
+  size: 500Mi
+
+admin:
+  existingSecret: "pihole-password"
+  passwordKey: "password"
+
+DNS1: "8.8.8.8"
+DNS2: "8.8.4.4"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
