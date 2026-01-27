@@ -15,6 +15,21 @@ serviceWeb:
   https:
     enabled: false
 
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  hosts:
+    - pihole.nagelkerke.net
+  tls:
+    - secretName: pihole-tls
+      hosts:
+        - pihole.nagelkerke.net
+  path: /
+
 persistentVolumeClaim:
   enabled: true
   size: 500Mi
@@ -25,6 +40,12 @@ admin:
 
 DNS1: "8.8.8.8"
 DNS2: "8.8.4.4"
+
+dnsmasq:
+  customDnsEntries:
+    - address=/plex.nagelkerke.net/192.168.1.243
+    - address=/pihole.nagelkerke.net/192.168.1.243
+    - address=/traefik.nagelkerke.net/192.168.1.243
 
 resources:
   limits:

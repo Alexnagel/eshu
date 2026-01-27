@@ -1,0 +1,41 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@nagelkerke.net
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - dns01:
+        webhook:
+          groupName: acme.nagelkerke.net
+          solverName: transip
+          config:
+            accountName: nagelkerke
+            apiKeySecretRef:
+              name: transip-api-key
+              key: apiKey
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: admin@nagelkerke.net
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+    - dns01:
+        webhook:
+          groupName: acme.nagelkerke.net
+          solverName: transip
+          config:
+            accountName: nagelkerke
+            apiKeySecretRef:
+              name: transip-api-key
+              key: apiKey
