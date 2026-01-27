@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Alexnagel/eshu.git  # Update this with your Git repo URL
+    repoURL: https://github.com/alexnagel/eshu.git  # Update this with your Git repo URL
     targetRevision: HEAD  # or main, master, depending on your default branch
     path: applications
     directory:
