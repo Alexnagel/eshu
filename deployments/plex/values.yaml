@@ -10,24 +10,6 @@ service:
 ingress:
   enabled: false
 
-extraObjects:
-  - apiVersion: traefik.io/v1alpha1
-    kind: IngressRoute
-    metadata:
-      name: plex-secure
-      namespace: plex
-    spec:
-      entryPoints:
-        - websecure
-      routes:
-        - match: Host(`plex.nagelkerke.net`)
-          kind: Rule
-          services:
-            - name: plex
-              port: 32400
-      tls:
-        certResolver: transip
-
 extraVolumes:
   - name: hecate
     hostPath:

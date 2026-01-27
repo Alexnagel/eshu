@@ -20,6 +20,9 @@ spec:
     - repoURL: https://github.com/alexnagel/eshu.git
       targetRevision: main
       ref: values
+    - repoURL: https://github.com/alexnagel/eshu.git
+      targetRevision: main
+      path: deployments/plex
   
   destination:
     server: https://kubernetes.default.svc
