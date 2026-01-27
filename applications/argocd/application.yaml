@@ -7,23 +7,17 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    repoURL: https://argoproj.github.io/argo-helm
-    chart: argo-cd
-    targetRevision: 7.7.12
-    helm:
-      releaseName: argocd
-      values: |
-        global:
-          domain: argocd.local
-        
-        configs:
-          params:
-            server.insecure: true
-        
-        server:
-          service:
-            type: ClusterIP
+  sources:
+    - repoURL: https://argoproj.github.io/argo-helm
+      chart: argo-cd
+      targetRevision: 7.7.12
+      helm:
+        releaseName: argocd
+        valueFiles:
+          - $values/deployments/argocd/values.yaml
+    - repoURL: https://github.com/anagelk1/eshu.git
+      targetRevision: HEAD
+      ref: values
   
   destination:
     server: https://kubernetes.default.svc
