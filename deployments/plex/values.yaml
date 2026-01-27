@@ -35,6 +35,13 @@ persistence:
     size: 20Gi
     storageClass: local-path
 
+pms:
+  gpu:
+    nvidia:
+      enabled: true
+      devices: "all"
+      capabilities: "compute,video,utility"
+
 env:
   TZ: "Europe/Amsterdam"
   PLEX_CLAIM: "***REMOVED-PLEX-CLAIM***"
