@@ -10,7 +10,7 @@ spec:
     - match: Host(`plex.nagelkerke.net`)
       kind: Rule
       services:
-        - name: plex
+        - name: plex-plex-media-server
           port: 32400
   tls:
     certResolver: transip
