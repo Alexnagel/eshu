@@ -3,7 +3,7 @@
   "extends": [
     "config:recommended"
   ],
-  "timezone": "America/New_York",
+  "timezone": "Europe/Amsterdam",
   "schedule": ["every weekend"],
   "prConcurrentLimit": 3,
   "prHourlyLimit": 2,
@@ -20,26 +20,14 @@
   "helm-values": {
     "fileMatch": ["deployments/.+/values\\.yaml$"]
   },
-  "regexManagers": [
-    {
-      "fileMatch": ["applications/.+\\.yaml$"],
-      "matchStrings": [
-        "chart: (?<depName>.*?)\\n.*?targetRevision: (?<currentValue>.*?)\\n"
-      ],
-      "datasourceTemplate": "helm"
-    },
-    {
-      "fileMatch": ["applications/.+\\.yaml$"],
-      "matchStrings": [
-        "repoURL: https://(?<registryUrl>.*?)\\n.*?chart: (?<depName>.*?)\\n.*?targetRevision: (?<currentValue>.*?)\\n"
-      ],
-      "datasourceTemplate": "helm"
-    }
-  ],
   "packageRules": [
     {
       "matchDatasources": ["helm"],
       "groupName": "Helm charts"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     }
   ]
 }
