@@ -9,6 +9,17 @@ spec:
     permanent: true
 ---
 apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: pihole-redirect
+  namespace: pihole
+spec:
+  redirectRegex:
+    regex: ^https://([^/]+)/?$
+    replacement: https://${1}/admin
+    permanent: false
+---
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: pihole-http
@@ -36,6 +47,8 @@ spec:
   routes:
     - match: Host(`pihole.nagelkerke.net`)
       kind: Rule
+      middlewares:
+        - name: pihole-redirect
       services:
         - name: pihole-web
           port: 80
