@@ -1,0 +1,57 @@
+# Renovate Operator Configuration
+operator:
+  image:
+    repository: mogenius/renovate-operator
+    tag: latest
+    pullPolicy: IfNotPresent
+
+# UI Configuration
+ui:
+  enabled: true
+  service:
+    type: ClusterIP
+    port: 8080
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+
+# Renovate runner configuration
+renovate:
+  schedule: "0 */4 * * *"  # Run every 4 hours
+  
+  # GitHub platform configuration
+  platform: github
+  endpoint: "https://api.github.com/"
+  
+  # Repository to scan
+  repositories:
+    - alexnagel/eshu
+  
+  # Use renovate.json from repo
+  onboarding: false
+  requireConfig: optional
+  
+  # GitHub token from secret
+  secrets:
+    GITHUB_COM_TOKEN:
+      secretName: renovate-github-token
+      key: token
+  
+  # Resource limits for renovate jobs
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  
+  # Persistence for cache
+  persistence:
+    enabled: true
+    storageClass: ""
+    size: 2Gi
