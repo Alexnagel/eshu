@@ -40,7 +40,7 @@ ingressRoute:
       - websecure
     matchRule: Host(`traefik.nagelkerke.net`)
     tls:
-      certResolver: transip
+      certResolver: cloudflare
 
 providers:
   kubernetesCRD:
@@ -56,10 +56,10 @@ globalArguments:
   - "--global.checknewversion"
 
 additionalArguments:
-  - "--certificatesresolvers.transip.acme.email=admin@nagelkerke.net"
-  - "--certificatesresolvers.transip.acme.dnschallenge.provider=cloudflare"
-  - "--certificatesresolvers.transip.acme.dnschallenge.delaybeforecheck=30"
-  - "--certificatesresolvers.transip.acme.storage=/data/acme.json"
+  - "--certificatesresolvers.cloudflare.acme.email=admin@nagelkerke.net"
+  - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+  - "--certificatesresolvers.cloudflare.acme.dnschallenge.delaybeforecheck=30"
+  - "--certificatesresolvers.cloudflare.acme.storage=/data/acme.json"
   - "--providers.kubernetescrd.namespaces="
 
 env:

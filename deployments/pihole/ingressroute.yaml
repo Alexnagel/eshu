@@ -53,4 +53,4 @@ spec:
         - name: pihole-web
           port: 80
   tls:
-    certResolver: transip
+    certResolver: cloudflare
