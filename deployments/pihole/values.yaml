@@ -29,11 +29,15 @@ admin:
 DNS1: "8.8.8.8"
 DNS2: "8.8.4.4"
 
-dnsmasq:
-  customDnsEntries:
-    - address=/plex.nagelkerke.net/192.168.1.243
-    - address=/pihole.nagelkerke.net/192.168.1.243
-    - address=/traefik.nagelkerke.net/192.168.1.243
+extraVolumeMounts:
+  custom-dnsmasq:
+    mountPath: /etc/dnsmasq.d/02-custom.conf
+    subPath: 02-custom.conf
+
+extraVolumes:
+  custom-dnsmasq:
+    configMap:
+      name: pihole-custom-dnsmasq
 
 resources:
   limits:
