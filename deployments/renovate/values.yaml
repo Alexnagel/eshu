@@ -35,11 +35,17 @@ renovate:
   onboarding: false
   requireConfig: optional
   
-  # GitHub token from secret
+  # GitHub App authentication (recommended over tokens)
   secrets:
-    GITHUB_COM_TOKEN:
-      secretName: renovate-github-token
-      key: token
+    RENOVATE_GH_APP_ID:
+      secretName: renovate-github-app
+      key: appId
+    RENOVATE_GH_APP_INSTALLATION_ID:
+      secretName: renovate-github-app
+      key: installationId
+    RENOVATE_GH_APP_PRIVATE_KEY:
+      secretName: renovate-github-app
+      key: privateKey
   
   # Resource limits for renovate jobs
   resources:
