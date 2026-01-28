@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`renovate.local`)
+    - match: Host(`renovate.nagelkerke.net`)
       kind: Rule
       services:
         - name: renovate-operator-ui
