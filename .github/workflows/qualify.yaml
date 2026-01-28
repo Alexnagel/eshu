@@ -1,0 +1,35 @@
+name: Qualify
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lint code base
+        uses: super-linter/super-linter@v7
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_YAML: true
+          VALIDATE_GITHUB_ACTIONS: true
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: renovate.json
+
+      - name: Validate renovate config
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name == 'push'
+        run: |
+          npx --yes renovate-config-validator
