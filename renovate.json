@@ -1,0 +1,45 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "America/New_York",
+  "schedule": ["every weekend"],
+  "prConcurrentLimit": 3,
+  "prHourlyLimit": 2,
+  "commitMessagePrefix": "⬆️",
+  "semanticCommits": "enabled",
+  "dependencyDashboard": true,
+  "labels": ["dependencies"],
+  "argocd": {
+    "fileMatch": ["applications/.+\\.yaml$"]
+  },
+  "kubernetes": {
+    "fileMatch": ["deployments/.+\\.yaml$"]
+  },
+  "helm-values": {
+    "fileMatch": ["deployments/.+/values\\.yaml$"]
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["applications/.+\\.yaml$"],
+      "matchStrings": [
+        "chart: (?<depName>.*?)\\n.*?targetRevision: (?<currentValue>.*?)\\n"
+      ],
+      "datasourceTemplate": "helm"
+    },
+    {
+      "fileMatch": ["applications/.+\\.yaml$"],
+      "matchStrings": [
+        "repoURL: https://(?<registryUrl>.*?)\\n.*?chart: (?<depName>.*?)\\n.*?targetRevision: (?<currentValue>.*?)\\n"
+      ],
+      "datasourceTemplate": "helm"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["helm"],
+      "groupName": "Helm charts"
+    }
+  ]
+}
