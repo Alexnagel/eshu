@@ -57,21 +57,17 @@ globalArguments:
 
 additionalArguments:
   - "--certificatesresolvers.transip.acme.email=admin@nagelkerke.net"
-  - "--certificatesresolvers.transip.acme.dnschallenge.provider=transip"
-  - "--certificatesresolvers.transip.acme.dnschallenge.delaybeforecheck=120"
+  - "--certificatesresolvers.transip.acme.dnschallenge.provider=cloudflare"
+  - "--certificatesresolvers.transip.acme.dnschallenge.delaybeforecheck=30"
   - "--certificatesresolvers.transip.acme.storage=/data/acme.json"
   - "--providers.kubernetescrd.namespaces="
 
 env:
-  - name: TRANSIP_ACCOUNT_NAME
-    value: brocos
-  - name: TRANSIP_PRIVATE_KEY_PATH
-    value: /transip/transip.key
-
-volumes:
-  - name: transip-key
-    mountPath: "/transip"
-    type: secret
+  - name: CF_DNS_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-token
+        key: token
 
 persistence:
   enabled: true
