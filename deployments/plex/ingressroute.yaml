@@ -53,4 +53,4 @@ spec:
         - name: plex-plex-media-server
           port: 32400
   tls:
-    certResolver: transip
+    certResolver: cloudflare

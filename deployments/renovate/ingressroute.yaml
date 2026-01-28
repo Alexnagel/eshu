@@ -13,4 +13,4 @@ spec:
         - name: renovate-operator-ui
           port: 8080
   tls:
-    certResolver: transip
+    certResolver: cloudflare
