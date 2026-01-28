@@ -20,6 +20,9 @@
   "helm-values": {
     "fileMatch": ["deployments/.+/values\\.yaml$"]
   },
+  "github-actions": {
+    "fileMatch": ["\\.github/workflows/.+\\.ya?ml$"]
+  },
   "packageRules": [
     {
       "matchDatasources": ["helm"],
@@ -28,6 +31,10 @@
     {
       "matchUpdateTypes": ["major"],
       "automerge": false
+    },
+    {
+      "matchDatasources": ["github-tags"],
+      "pinDigests": true
     }
   ]
 }
