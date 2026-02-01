@@ -1,63 +1,39 @@
 # Renovate Operator Configuration
-operator:
-  image:
-    repository: mogenius/renovate-operator
-    tag: latest
-    pullPolicy: IfNotPresent
+image:
+  registry: ghcr.io
+  repository: mogenius/renovate-operator
+  tag: ""  # Uses chart appVersion if empty
+  pullPolicy: IfNotPresent
 
-# UI Configuration
-ui:
+# Ingress for the UI
+ingress:
   enabled: true
-  service:
-    type: ClusterIP
-    port: 8080
-  resources:
-    limits:
-      cpu: 200m
-      memory: 256Mi
-    requests:
-      cpu: 50m
-      memory: 128Mi
+  className: traefik
+  hosts:
+    - host: renovate.nagelkerke.net
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: renovate-tls
+      hosts:
+        - renovate.nagelkerke.net
 
-# Renovate runner configuration
-renovate:
-  schedule: "0 */4 * * *"  # Run every 4 hours
-  
-  # GitHub platform configuration
-  platform: github
-  endpoint: "https://api.github.com/"
-  
-  # Repository to scan
-  repositories:
-    - alexnagel/eshu
-  
-  # Use renovate.json from repo
-  onboarding: false
-  requireConfig: optional
-  
-  # GitHub App authentication (recommended over tokens)
-  secrets:
-    RENOVATE_GH_APP_ID:
-      secretName: renovate-github-app
-      key: appId
-    RENOVATE_GH_APP_INSTALLATION_ID:
-      secretName: renovate-github-app
-      key: installationId
-    RENOVATE_GH_APP_PRIVATE_KEY:
-      secretName: renovate-github-app
-      key: privateKey
-  
-  # Resource limits for renovate jobs
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 1Gi
-    requests:
-      cpu: 100m
-      memory: 256Mi
-  
-  # Persistence for cache
-  persistence:
-    enabled: true
-    storageClass: ""
-    size: 2Gi
+# Operator configuration
+config:
+  # Delete successfully finished jobs (will lose logs)
+  deleteSuccessfulJobs: false
+  # TTL for finished jobs in seconds, -1 means kept forever
+  jobTTLSecondsAfterFinished: -1
+  # Default backoff limit for renovate jobs
+  defaultJobBackoffLimit: 1
+  # Default active deadline seconds for renovate jobs  
+  defaultJobActiveDeadlineSeconds: 1800
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
