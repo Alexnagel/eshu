@@ -8,7 +8,7 @@ image:
 # Ingress for the UI
 ingress:
   enabled: true
-  className: traefik
+  ingressClassName: traefik
   hosts:
     - host: renovate.nagelkerke.net
       paths:
