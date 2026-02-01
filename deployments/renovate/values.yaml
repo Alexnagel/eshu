@@ -5,20 +5,6 @@ image:
   tag: ""  # Uses chart appVersion if empty
   pullPolicy: IfNotPresent
 
-# Ingress for the UI
-ingress:
-  enabled: true
-  ingressClassName: traefik
-  annotations:
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.certresolver: cloudflare
-    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
-  hosts:
-    - host: renovate.nagelkerke.net
-      paths:
-        - path: /
-          pathType: Prefix
-
 # Operator configuration
 config:
   # Delete successfully finished jobs (will lose logs)
