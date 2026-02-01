@@ -20,6 +20,9 @@ spec:
     - repoURL: https://github.com/alexnagel/eshu.git
       targetRevision: HEAD
       ref: values
+    - repoURL: https://github.com/alexnagel/eshu.git
+      targetRevision: HEAD
+      path: deployments/renovate
   
   destination:
     server: https://kubernetes.default.svc
