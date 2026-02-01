@@ -1,0 +1,40 @@
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: eshu-renovate
+  namespace: renovate
+spec:
+  # Run every 4 hours
+  schedule: "0 */4 * * *"
+  
+  # Discover repositories in your GitHub account
+  discoveryFilter: "alexnagel/*"
+  
+  # Renovate Docker image
+  image: renovate/renovate:latest
+  
+  # Run up to 3 renovate jobs concurrently
+  parallelism: 3
+  
+  # Reference to secret containing GitHub credentials
+  secretRef: renovate-github-app
+  
+  # GitHub platform configuration
+  extraEnv:
+    - name: RENOVATE_PLATFORM
+      value: github
+    - name: RENOVATE_ENDPOINT
+      value: https://api.github.com/
+    - name: RENOVATE_ONBOARDING
+      value: "false"
+    - name: RENOVATE_REQUIRE_CONFIG
+      value: "optional"
+  
+  # Resource limits for renovate jobs
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
