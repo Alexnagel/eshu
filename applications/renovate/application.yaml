@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: https://mogenius.github.io/helm-charts/
+    - repoURL: oci://ghcr.io/mogenius/helm-charts
       chart: renovate-operator
       targetRevision: 0.8.1
       helm:
