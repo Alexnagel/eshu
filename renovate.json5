@@ -1,8 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
+  "extends": ["config:recommended"],
   "timezone": "Europe/Amsterdam",
   "schedule": ["every weekend"],
   "prConcurrentLimit": 3,
@@ -11,30 +9,15 @@
   "semanticCommits": "enabled",
   "dependencyDashboard": true,
   "labels": ["dependencies"],
-  "argocd": {
-    "fileMatch": ["applications/.+\\.yaml$"]
-  },
-  "kubernetes": {
-    "fileMatch": ["deployments/.+\\.yaml$"]
-  },
-  "helm-values": {
-    "fileMatch": ["deployments/.+/values\\.yaml$"]
-  },
+  "argocd": {"managerFilePatterns": ["/applications/.+\\.yaml$/"]},
+  "kubernetes": {"managerFilePatterns": ["/deployments/.+\\.yaml$/"]},
+  "helm-values": {"managerFilePatterns": ["/deployments/.+/values\\.yaml$/"]},
   "github-actions": {
-    "fileMatch": ["\\.github/workflows/.+\\.ya?ml$"]
+    "managerFilePatterns": ["/\\.github/workflows/.+\\.ya?ml$/"]
   },
   "packageRules": [
-    {
-      "matchDatasources": ["helm"],
-      "groupName": "Helm charts"
-    },
-    {
-      "matchUpdateTypes": ["major"],
-      "automerge": false
-    },
-    {
-      "matchDatasources": ["github-tags"],
-      "pinDigests": true
-    }
+    {"matchDatasources": ["helm"], "groupName": "Helm charts"},
+    {"matchUpdateTypes": ["major"], "automerge": false},
+    {"matchDatasources": ["github-tags"], "pinDigests": true}
   ]
 }
