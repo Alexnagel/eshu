@@ -29,6 +29,25 @@ spec:
       value: "false"
     - name: RENOVATE_REQUIRE_CONFIG
       value: "optional"
+    - name: RENOVATE_USERNAME
+      value: "eshu-renovate[bot]"
+    - name: RENOVATE_GIT_AUTHOR
+      value: "eshu-renovate[bot] <eshu-renovate[bot]@users.noreply.github.com>"
+    - name: GITHUB_APP_ID
+      valueFrom:
+        secretKeyRef:
+          name: renovate-github-app
+          key: appId
+    - name: GITHUB_APP_INSTALLATION_ID
+      valueFrom:
+        secretKeyRef:
+          name: renovate-github-app
+          key: installationId
+    - name: GITHUB_APP_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef:
+          name: renovate-github-app
+          key: privateKey
   
   # Resource limits for renovate jobs
   resources:
