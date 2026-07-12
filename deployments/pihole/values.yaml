@@ -29,23 +29,22 @@ admin:
 DNS1: "8.8.8.8"
 DNS2: "8.8.4.4"
 
-extraVolumeMounts:
-  custom-dnsmasq:
-    mountPath: /etc/dnsmasq.d/02-custom.conf
-    subPath: 02-custom.conf
-
-extraVolumes:
-  custom-dnsmasq:
-    configMap:
-      name: pihole-custom-dnsmasq
+# Local DNS records for the homelab, served by the chart's own
+# custom-dnsmasq ConfigMap (do not hand-roll a ConfigMap of that name).
+dnsmasq:
+  customDnsEntries:
+    - address=/plex.nagelkerke.net/192.168.0.243
+    - address=/pihole.nagelkerke.net/192.168.0.243
+    - address=/traefik.nagelkerke.net/192.168.0.243
+    - address=/argocd.nagelkerke.net/192.168.0.243
+    - address=/renovate.nagelkerke.net/192.168.0.243
 
 resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
   requests:
     cpu: 100m
     memory: 128Mi
     ephemeral-storage: 256Mi
   limits:
+    cpu: 500m
+    memory: 512Mi
     ephemeral-storage: 1Gi
