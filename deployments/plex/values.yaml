@@ -23,6 +23,9 @@ extraVolumes:
     hostPath:
       path: /mediamounts/hermes
       type: Directory
+  - name: transcode
+    emptyDir:
+      sizeLimit: 20Gi
 
 extraVolumeMounts:
   - name: hecate
@@ -31,6 +34,8 @@ extraVolumeMounts:
     mountPath: /data/mercury
   - name: hermes
     mountPath: /data/hermes
+  - name: transcode
+    mountPath: /transcode
 
 persistence:
   config:
