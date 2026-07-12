@@ -1,11 +1,11 @@
 image:
-  tag: latest
+  tag: 1.43.2.10687-563d026ea
 
 service:
   type: LoadBalancer
   port: 32400
   annotations:
-    metallb.universe.tf/loadBalancerIPs: "192.168.1.242"
+    metallb.universe.tf/loadBalancerIPs: "192.168.0.242"
 
 ingress:
   enabled: false
@@ -58,7 +58,8 @@ pms:
 
 env:
   TZ: "Europe/Amsterdam"
-  PLEX_CLAIM: "claim-4ZJ9HwTQpeFcJzbLHbe_"
+  # PLEX_CLAIM is only needed for the initial one-time server claim.
+  # The server is already claimed, so it is intentionally omitted here.
   NVIDIA_VISIBLE_DEVICES: all
   NVIDIA_DRIVER_CAPABILITIES: all
 

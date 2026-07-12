@@ -17,8 +17,8 @@ spec:
         releaseName: traefik
         valueFiles:
           - $values/deployments/traefik/values.yaml
-    - repoURL: https://github.com/alexnagel/eshu.git
-      targetRevision: HEAD
+    - repoURL: https://github.com/Alexnagel/eshu.git
+      targetRevision: main
       ref: values
   
   destination:

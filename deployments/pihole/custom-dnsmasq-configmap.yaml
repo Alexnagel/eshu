@@ -7,8 +7,8 @@ metadata:
     app: pihole
 data:
   02-custom.conf: |
-    address=/plex.nagelkerke.net/192.168.1.243
-    address=/pihole.nagelkerke.net/192.168.1.243
-    address=/traefik.nagelkerke.net/192.168.1.243
-    address=/argocd.nagelkerke.net/192.168.1.243
-    address=/renovate.nagelkerke.net/192.168.1.243
+    address=/plex.nagelkerke.net/192.168.0.243
+    address=/pihole.nagelkerke.net/192.168.0.243
+    address=/traefik.nagelkerke.net/192.168.0.243
+    address=/argocd.nagelkerke.net/192.168.0.243
+    address=/renovate.nagelkerke.net/192.168.0.243

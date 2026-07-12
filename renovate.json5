@@ -18,6 +18,6 @@
   "packageRules": [
     {"matchDatasources": ["helm"], "groupName": "Helm charts"},
     {"matchUpdateTypes": ["major"], "automerge": false},
-    {"matchDatasources": ["github-tags"], "pinDigests": true}
+    {"matchDatasources": ["github-actions"], "pinDigests": true}
   ]
 }

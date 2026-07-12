@@ -1,14 +1,14 @@
 serviceDns:
   annotations:
     metallb.universe.tf/allow-shared-ip: pihole-svc
+    metallb.universe.tf/loadBalancerIPs: "192.168.0.240"
   type: LoadBalancer
-  loadBalancerIP: "192.168.1.240"
 
 serviceWeb:
   annotations:
     metallb.universe.tf/allow-shared-ip: pihole-svc
+    metallb.universe.tf/loadBalancerIPs: "192.168.0.240"
   type: LoadBalancer
-  loadBalancerIP: "192.168.1.240"
   http:
     enabled: true
     port: 80

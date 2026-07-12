@@ -15,7 +15,7 @@ podSecurityContext:
 service:
   type: LoadBalancer
   annotations:
-    metallb.universe.tf/loadBalancerIPs: "192.168.1.243"
+    metallb.universe.tf/loadBalancerIPs: "192.168.0.243"
 
 ports:
   web:
@@ -23,6 +23,10 @@ ports:
     expose:
       default: true
     exposedPort: 80
+    # Redirect all plain HTTP to HTTPS at the entrypoint so individual
+    # services don't need their own redirect middleware/IngressRoute.
+    redirectTo:
+      port: websecure
   websecure:
     port: 443
     expose:

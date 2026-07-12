@@ -17,10 +17,10 @@ spec:
         releaseName: plex
         valueFiles:
           - $values/deployments/plex/values.yaml
-    - repoURL: https://github.com/alexnagel/eshu.git
+    - repoURL: https://github.com/Alexnagel/eshu.git
       targetRevision: main
       ref: values
-    - repoURL: https://github.com/alexnagel/eshu.git
+    - repoURL: https://github.com/Alexnagel/eshu.git
       targetRevision: main
       path: deployments/plex
   

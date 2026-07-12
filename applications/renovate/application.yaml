@@ -17,11 +17,11 @@ spec:
         releaseName: renovate-operator
         valueFiles:
           - $values/deployments/renovate/values.yaml
-    - repoURL: https://github.com/alexnagel/eshu.git
-      targetRevision: HEAD
+    - repoURL: https://github.com/Alexnagel/eshu.git
+      targetRevision: main
       ref: values
-    - repoURL: https://github.com/alexnagel/eshu.git
-      targetRevision: HEAD
+    - repoURL: https://github.com/Alexnagel/eshu.git
+      targetRevision: main
       path: deployments/renovate
   
   destination:
