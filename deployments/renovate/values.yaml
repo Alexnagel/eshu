@@ -10,10 +10,10 @@ config:
   # Delete successfully finished jobs (will lose logs)
   deleteSuccessfulJobs: false
   # TTL for finished jobs in seconds, -1 means kept forever
-  jobTTLSecondsAfterFinished: -1
+  jobTTLSecondsAfterFinished: 3600
   # Default backoff limit for renovate jobs
   defaultJobBackoffLimit: 1
-  # Default active deadline seconds for renovate jobs  
+  # Default active deadline seconds for renovate jobs
   defaultJobActiveDeadlineSeconds: 1800
 
 resources:
