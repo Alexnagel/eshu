@@ -1,24 +1,6 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: renovate-ui-http
-  namespace: renovate
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`renovate.nagelkerke.net`)
-      kind: Rule
-      middlewares:
-        - name: redirect-https
-          namespace: default
-      services:
-        - name: renovate-operator-renovate-operator
-          port: 8081
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
   name: renovate-ui
   namespace: renovate
 spec:

@@ -15,11 +15,11 @@ spec:
         releaseName: argocd
         valueFiles:
           - $values/deployments/argocd/values.yaml
-    - repoURL: https://github.com/alexnagel/eshu.git
-      targetRevision: HEAD
+    - repoURL: https://github.com/Alexnagel/eshu.git
+      targetRevision: main
       ref: values
-    - repoURL: https://github.com/alexnagel/eshu.git
-      targetRevision: HEAD
+    - repoURL: https://github.com/Alexnagel/eshu.git
+      targetRevision: main
       path: deployments/argocd
   
   destination:

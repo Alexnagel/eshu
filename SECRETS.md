@@ -57,7 +57,7 @@ PRIVATE_KEY_PATH="$HOME/Downloads/argocd-eshu.2026-01-16.private-key.pem"
 # Create the secret
 kubectl create secret generic eshu-repo \
   --from-literal=type=git \
-  --from-literal=url=https://github.com/anagelk1/eshu.git \
+  --from-literal=url=https://github.com/Alexnagel/eshu.git \
   --from-literal=githubAppID="$APP_ID" \
   --from-literal=githubAppInstallationID="$INSTALLATION_ID" \
   --from-file=githubAppPrivateKey="$PRIVATE_KEY_PATH" \
@@ -91,21 +91,13 @@ kubectl label secret eshu-repo -n argocd argocd.argoproj.io/secret-type=reposito
 # Replace YOUR_GITHUB_PAT with your actual token
 kubectl create secret generic eshu-repo \
   --from-literal=type=git \
-  --from-literal=url=https://github.com/anagelk1/eshu.git \
-  --from-literal=username=anagelk1 \
+  --from-literal=url=https://github.com/Alexnagel/eshu.git \
+  --from-literal=username=Alexnagel \
   --from-literal=password=YOUR_GITHUB_PAT \
   --namespace=argocd
 
 # Add the required label
 kubectl label secret eshu-repo -n argocd argocd.argoproj.io/secret-type=repository
-```
-
-Or use the example file:
-
-```bash
-cp argocd-repo-secret.yaml.example argocd-repo-secret.yaml
-# Edit and add your GitHub PAT
-kubectl apply -f argocd-repo-secret.yaml
 ```
 
 ### Option 3: Using SSH Keys
@@ -129,14 +121,14 @@ ssh-keygen -t ed25519 -C "argocd@eshu" -f ~/.ssh/argocd_eshu
 ```bash
 kubectl create secret generic eshu-repo-ssh \
   --from-literal=type=git \
-  --from-literal=url=git@github.com:anagelk1/eshu.git \
+  --from-literal=url=git@github.com:Alexnagel/eshu.git \
   --from-file=sshPrivateKey=$HOME/.ssh/argocd_eshu \
   --namespace=argocd
 
 kubectl label secret eshu-repo-ssh -n argocd argocd.argoproj.io/secret-type=repository
 ```
 
-**Note**: If using SSH, update `app-of-apps.yaml` to use SSH URL: `git@github.com:anagelk1/eshu.git`
+**Note**: If using SSH, update `app-of-apps.yaml` to use SSH URL: `git@github.com:Alexnagel/eshu.git`
 
 ### Quick Comparison
 
@@ -185,24 +177,41 @@ kubectl create secret generic pihole-password \
   --namespace=pihole
 ```
 
-### Using the Example Template
+The pihole Helm values reference this secret via `admin.existingSecret:
+pihole-password` (see `deployments/pihole/values.yaml`).
 
-Alternatively, copy the example and modify it locally:
+## Traefik: Cloudflare API Token
+
+Traefik solves ACME DNS-01 challenges through Cloudflare, so it needs an API
+token with `Zone:DNS:Edit` permission on the `nagelkerke.net` zone.
 
 ```bash
-cp applications/pihole/secret.yaml.example applications/pihole/secret.yaml
-# Edit the password in secret.yaml
-kubectl apply -f applications/pihole/secret.yaml
+kubectl create namespace traefik
+kubectl create secret generic cloudflare-api-token \
+  --from-literal=token="YOUR_CLOUDFLARE_DNS_TOKEN" \
+  --namespace=traefik
 ```
 
-**Note:** The `secret.yaml` file is gitignored and won't be committed to your repository.
+## Renovate: GitHub App
+
+The Renovate operator authenticates to GitHub as a GitHub App. Create a secret
+with the App ID, installation ID, and private key:
+
+```bash
+kubectl create namespace renovate
+kubectl create secret generic renovate-github-app \
+  --from-literal=appId="YOUR_APP_ID" \
+  --from-literal=installationId="YOUR_INSTALLATION_ID" \
+  --from-file=privateKey="path/to/renovate-private-key.pem" \
+  --namespace=renovate
+```
 
 ## Future Secrets
 
-For additional secrets, follow the same pattern:
-1. Create a `.example` file in the repository
-2. The actual secret file is gitignored
-3. Create secrets manually in the cluster or use a secrets management solution
+Secrets are created manually in the cluster (or via a secrets-management
+solution — see Advanced Options) and never committed. The patterns in
+`.gitignore` guard against accidentally checking in `*.pem`, `*.key`, and
+`secret.yaml` files.
 
 ## Advanced Options
 

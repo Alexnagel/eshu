@@ -8,7 +8,7 @@ metadata:
 spec:
   addresses:
     # Update this IP range to match your local network
-    - 192.168.1.240-192.168.1.250
+    - 192.168.0.240-192.168.0.250
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
