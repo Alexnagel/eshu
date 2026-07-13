@@ -241,6 +241,19 @@ The origin URL must be reachable **from inside the cluster** — use cluster
 DNS for k8s services (e.g. `http://immich-server.immich.svc.cluster.local:2283`)
 or the host IP (e.g. `http://192.168.0.108:2283`) for services still on docker.
 
+## Immich: Database Password
+
+Immich's server and its Postgres both read the DB password from one secret.
+Use the same `DB_PASSWORD` value as the docker-compose `.env` so the
+existing database data directory keeps working:
+
+```bash
+kubectl create namespace immich
+kubectl create secret generic immich-db \
+  --from-literal=password='<DB_PASSWORD from the compose .env>' \
+  --namespace=immich
+```
+
 ## Future Secrets
 
 Secrets are created manually in the cluster (or via a secrets-management

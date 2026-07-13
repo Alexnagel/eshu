@@ -18,6 +18,7 @@ Application deploys everything else.
 │   ├── metallb-config/       #   MetalLB IP pool + L2Advertisement
 │   ├── nvidia-device-plugin/ #   NVIDIA device plugin (GPU scheduling)
 │   ├── traefik/              #   Traefik ingress + ACME/Cloudflare TLS
+│   ├── immich/               #   Immich photo library (+ dedicated Postgres)
 │   ├── pihole/               #   Pi-hole DNS
 │   ├── plex/                 #   Plex Media Server (GPU transcoding)
 │   ├── sonarr/               #   Sonarr (TV)          → media namespace
@@ -83,6 +84,7 @@ These are intentionally **not** in Git. See [SECRETS.md](SECRETS.md) for details
 | `pihole-password` | `pihole` | Pi-hole admin password |
 | `renovate-github-app` | `renovate` | GitHub App creds for the Renovate operator |
 | `cloudflared-token` | `cloudflared` | Cloudflare Tunnel connector token (public access) |
+| `immich-db` | `immich` | Immich Postgres password (same as compose `.env`) |
 
 ### 3. Deploy the root Application
 

@@ -1,0 +1,42 @@
+# Shared between all Immich components (server + machine-learning).
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          # Immich v3 — see https://immich.app/blog/v3-migration
+          tag: v3.0.2
+        env:
+          DB_HOSTNAME: immich-postgres
+          # Must match the DB_DATABASE_NAME / DB_USERNAME from the
+          # docker-compose .env (immich/postgres are the documented defaults)
+          DB_DATABASE_NAME: immich
+          DB_USERNAME: postgres
+          DB_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: immich-db
+                key: password
+
+immich:
+  persistence:
+    # The photo library — PVC backed by the existing docker UPLOAD_LOCATION
+    # (see deployments/immich/library-storage.yaml)
+    library:
+      existingClaim: immich-library
+
+# Bundled Valkey (replaces the compose redis/valkey container; job queues
+# are rebuilt on start so no data migration is needed)
+valkey:
+  enabled: true
+
+machine-learning:
+  persistence:
+    cache:
+      enabled: true
+      # Persist downloaded ML models across restarts. local-path only
+      # supports ReadWriteOnce (chart default is ReadWriteMany).
+      type: persistentVolumeClaim
+      accessMode: ReadWriteOnce
+      size: 10Gi
+      storageClass: local-path
