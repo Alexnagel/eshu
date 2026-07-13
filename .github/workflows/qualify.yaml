@@ -85,7 +85,7 @@ jobs:
               argocd.argoproj.io/secret-type: repo-creds
           stringData:
             url: https://github.com/${{ github.repository }}
-            password: ${{ secrets.GITHUB_TOKEN }}  ⬅️ Short-lived GitHub Token
+            password: ${{ secrets.GITHUB_TOKEN }}
             username: not-used
           EOF
 
