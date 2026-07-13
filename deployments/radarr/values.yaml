@@ -1,0 +1,50 @@
+controllers:
+  radarr:
+    # SQLite config on a hostPath — never run two instances
+    strategy: Recreate
+    containers:
+      app:
+        image:
+          repository: lscr.io/linuxserver/radarr
+          tag: 6.2.1.10461-ls308
+        env:
+          PUID: "1000"
+          PGID: "1000"
+          # Kept identical to the docker-compose setup (other apps use
+          # Europe/Brussels — change here if that was unintentional)
+          TZ: Etc/UTC
+        # linuxserver images start as root (s6) and drop to PUID/PGID
+        securityContext:
+          runAsUser: 0
+          runAsNonRoot: false
+          readOnlyRootFilesystem: false
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+
+defaultPodOptions:
+  nodeSelector:
+    kubernetes.io/hostname: eshu
+
+service:
+  app:
+    controller: radarr
+    ports:
+      http:
+        port: 7878
+
+persistence:
+  config:
+    type: hostPath
+    hostPath: /home/alex/.config/radarr
+    globalMounts:
+      - path: /config
+  mediamounts:
+    type: hostPath
+    hostPath: /mediamounts
+    globalMounts:
+      - path: /mediamounts

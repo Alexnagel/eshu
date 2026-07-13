@@ -13,12 +13,17 @@ Application deploys everything else.
 ├── SECRETS.md                # How to create the secrets that must not live in Git
 ├── applications/             # One Argo CD Application per component (the "what")
 │   ├── argocd/               #   Argo CD (self-managed)
+│   ├── cloudflared/          #   Cloudflare Tunnel (public access to selected services)
 │   ├── metallb/              #   MetalLB (bare-metal LoadBalancer)
 │   ├── metallb-config/       #   MetalLB IP pool + L2Advertisement
 │   ├── nvidia-device-plugin/ #   NVIDIA device plugin (GPU scheduling)
 │   ├── traefik/              #   Traefik ingress + ACME/Cloudflare TLS
 │   ├── pihole/               #   Pi-hole DNS
 │   ├── plex/                 #   Plex Media Server (GPU transcoding)
+│   ├── sonarr/               #   Sonarr (TV)          → media namespace
+│   ├── radarr/               #   Radarr (movies)      → media namespace
+│   ├── seerr/                #   Seerr (requests)     → media namespace
+│   ├── sabnzbd/              #   SABnzbd (usenet)     → media namespace
 │   └── renovate/             #   Renovate operator
 └── deployments/              # Helm values + extra manifests per component (the "how")
     └── <app>/
@@ -77,6 +82,7 @@ These are intentionally **not** in Git. See [SECRETS.md](SECRETS.md) for details
 | `cloudflare-api-token` | `traefik` | Cloudflare DNS-01 token for ACME TLS |
 | `pihole-password` | `pihole` | Pi-hole admin password |
 | `renovate-github-app` | `renovate` | GitHub App creds for the Renovate operator |
+| `cloudflared-token` | `cloudflared` | Cloudflare Tunnel connector token (public access) |
 
 ### 3. Deploy the root Application
 

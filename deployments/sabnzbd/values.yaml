@@ -1,0 +1,49 @@
+controllers:
+  sabnzbd:
+    # ini/db config on a hostPath — never run two instances
+    strategy: Recreate
+    containers:
+      app:
+        image:
+          repository: lscr.io/linuxserver/sabnzbd
+          tag: 5.0.4-ls261
+        env:
+          PUID: "1000"
+          PGID: "1000"
+          TZ: Europe/Brussels
+        # linuxserver images start as root (s6) and drop to PUID/PGID
+        securityContext:
+          runAsUser: 0
+          runAsNonRoot: false
+          readOnlyRootFilesystem: false
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            # unpacking/par2 repair is CPU heavy
+            cpu: 2000m
+            memory: 2Gi
+
+defaultPodOptions:
+  nodeSelector:
+    kubernetes.io/hostname: eshu
+
+service:
+  app:
+    controller: sabnzbd
+    ports:
+      http:
+        port: 8080
+
+persistence:
+  config:
+    type: hostPath
+    hostPath: /home/alex/.config/sabnzbd
+    globalMounts:
+      - path: /config
+  mediamounts:
+    type: hostPath
+    hostPath: /mediamounts
+    globalMounts:
+      - path: /mediamounts

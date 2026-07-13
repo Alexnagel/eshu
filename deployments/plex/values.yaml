@@ -27,13 +27,15 @@ extraVolumes:
     emptyDir:
       sizeLimit: 20Gi
 
+# Mount media at the same paths as the docker-compose setup so an existing
+# Plex library config (which references these paths) migrates unchanged.
 extraVolumeMounts:
   - name: hecate
-    mountPath: /data/hecate
+    mountPath: /hecate
   - name: mercury
-    mountPath: /data/mercury
+    mountPath: /mercury
   - name: hermes
-    mountPath: /data/hermes
+    mountPath: /hermes
   - name: transcode
     mountPath: /transcode
 

@@ -38,6 +38,10 @@ dnsmasq:
     - address=/traefik.nagelkerke.net/192.168.0.243
     - address=/argocd.nagelkerke.net/192.168.0.243
     - address=/renovate.nagelkerke.net/192.168.0.243
+    - address=/sonarr.nagelkerke.net/192.168.0.243
+    - address=/radarr.nagelkerke.net/192.168.0.243
+    - address=/seerr.nagelkerke.net/192.168.0.243
+    - address=/sabnzbd.nagelkerke.net/192.168.0.243
 
 resources:
   requests:
