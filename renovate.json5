@@ -1,6 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended",
+    // Pin all GitHub Actions to commit SHA digests (with version comment)
+    "helpers:pinGitHubActionDigests"
+  ],
   "timezone": "Europe/Amsterdam",
   "schedule": ["every weekend"],
   "prConcurrentLimit": 3,
@@ -15,9 +19,19 @@
   "github-actions": {
     "managerFilePatterns": ["/\\.github/workflows/.+\\.ya?ml$/"]
   },
+  // Tracks tool versions annotated with `# renovate: datasource=... depName=...`
+  // comments in workflows (kubeconform, argocd-diff-preview)
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/\\.github/workflows/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+?)(?: extractVersion=(?<extractVersion>[^\\s]+))?\\n\\s*[A-Za-z0-9_-]+:\\s*'?(?<currentValue>[^'\\s]+)'?"
+      ]
+    }
+  ],
   "packageRules": [
     {"matchDatasources": ["helm"], "groupName": "Helm charts"},
-    {"matchUpdateTypes": ["major"], "automerge": false},
-    {"matchDatasources": ["github-actions"], "pinDigests": true}
+    {"matchUpdateTypes": ["major"], "automerge": false}
   ]
 }
