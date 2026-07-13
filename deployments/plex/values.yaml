@@ -23,9 +23,6 @@ extraVolumes:
     hostPath:
       path: /mediamounts/hermes
       type: Directory
-  - name: transcode
-    emptyDir:
-      sizeLimit: 20Gi
 
 # Mount media at the same paths as the docker-compose setup so an existing
 # Plex library config (which references these paths) migrates unchanged.
@@ -36,8 +33,6 @@ extraVolumeMounts:
     mountPath: /mercury
   - name: hermes
     mountPath: /hermes
-  - name: transcode
-    mountPath: /transcode
 
 persistence:
   config:
@@ -58,10 +53,15 @@ pms:
       cpu: 4000m
       memory: 4Gi
       nvidia.com/gpu: 1
+      # Caps the chart's unbounded /transcode emptyDir (counts against
+      # pod ephemeral storage) so a transcode spike can't fill the node
+      # and evict other pods — only Plex itself gets evicted at the cap.
+      ephemeral-storage: 25Gi
     requests:
       cpu: 1000m
       memory: 2Gi
       nvidia.com/gpu: 1
+      ephemeral-storage: 1Gi
 
 env:
   TZ: "Europe/Amsterdam"
