@@ -25,8 +25,12 @@ ports:
     exposedPort: 80
     # Redirect all plain HTTP to HTTPS at the entrypoint so individual
     # services don't need their own redirect middleware/IngressRoute.
-    redirectTo:
-      port: websecure
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
   websecure:
     port: 443
     expose:
@@ -34,8 +38,8 @@ ports:
     exposedPort: 443
     http3:
       enabled: true
-    tls:
-      enabled: true
+    # TLS on websecure is enabled by default in this chart version
+    # (ports.websecure.http.tls)
 
 ingressRoute:
   dashboard:
@@ -56,15 +60,16 @@ providers:
     publishedService:
       enabled: true
 
-globalArguments:
-  - "--global.checknewversion"
-
-additionalArguments:
-  - "--certificatesresolvers.cloudflare.acme.email=admin@nagelkerke.net"
-  - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
-  - "--certificatesresolvers.cloudflare.acme.dnschallenge.delaybeforecheck=30"
-  - "--certificatesresolvers.cloudflare.acme.storage=/data/acme.json"
-  - "--providers.kubernetescrd.namespaces="
+# ACME via Cloudflare DNS-01 — structured config replaces the old
+# --certificatesresolvers.* additionalArguments
+certificatesResolvers:
+  cloudflare:
+    acme:
+      email: admin@nagelkerke.net
+      storage: /data/acme.json
+      dnsChallenge:
+        provider: cloudflare
+        delayBeforeCheck: 30
 
 env:
   - name: CF_DNS_API_TOKEN
@@ -80,11 +85,11 @@ persistence:
   path: /data
   storageClass: local-path
 
-logs:
-  general:
-    level: INFO
-  access:
-    enabled: true
+log:
+  level: INFO
+
+accessLog:
+  enabled: true
 
 resources:
   requests:
