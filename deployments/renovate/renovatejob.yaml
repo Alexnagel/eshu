@@ -7,25 +7,31 @@ spec:
   # Renovate only opens/updates PRs on weekends (see renovate.json5),
   # so run the job twice a day on Sat/Sun instead of every 4h all week.
   schedule: "0 6,18 * * 6,0"
-  
-  # Discover repositories in your GitHub account
-  discoveryFilter: "alexnagel/*"
-  
+
+  # Discover repositories in the GitHub account
+  # (minimatch is case-sensitive — must match Alexnagel exactly)
+  discoveryFilters:
+    - "Alexnagel/*"
+
   # Renovate Docker image
   image: renovate/renovate:43.259.2
-  
+
   # Run up to 3 renovate jobs concurrently
   parallelism: 3
-  
-  # Reference to secret containing GitHub credentials
-  secretRef: renovate-github-app
-  
-  # GitHub platform configuration
+
+  # Fills RENOVATE_PLATFORM / RENOVATE_ENDPOINT
+  provider:
+    name: github
+    endpoint: https://api.github.com/
+
+  # The operator generates RENOVATE_TOKEN from the GitHub App credentials
+  githubAppReference:
+    secretName: renovate-github-app
+    appIdSecretKey: appId
+    installationIdSecretKey: installationId
+    pemSecretKey: privateKey
+
   extraEnv:
-    - name: RENOVATE_PLATFORM
-      value: github
-    - name: RENOVATE_ENDPOINT
-      value: https://api.github.com/
     - name: RENOVATE_ONBOARDING
       value: "false"
     - name: RENOVATE_REQUIRE_CONFIG
@@ -34,22 +40,7 @@ spec:
       value: "eshu-renovate[bot]"
     - name: RENOVATE_GIT_AUTHOR
       value: "eshu-renovate[bot] <eshu-renovate[bot]@users.noreply.github.com>"
-    - name: GITHUB_APP_ID
-      valueFrom:
-        secretKeyRef:
-          name: renovate-github-app
-          key: appId
-    - name: GITHUB_APP_INSTALLATION_ID
-      valueFrom:
-        secretKeyRef:
-          name: renovate-github-app
-          key: installationId
-    - name: GITHUB_APP_PRIVATE_KEY
-      valueFrom:
-        secretKeyRef:
-          name: renovate-github-app
-          key: privateKey
-  
+
   # Resource limits for renovate jobs
   resources:
     limits:

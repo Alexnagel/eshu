@@ -206,6 +206,41 @@ kubectl create secret generic renovate-github-app \
   --namespace=renovate
 ```
 
+## Cloudflared: Tunnel Token
+
+The cloudflared Deployment runs a connector for the existing
+**remotely-managed** Cloudflare Tunnel (the one previously run via
+docker-compose). Hostname → origin routing is configured in the Zero Trust
+dashboard, not in this repo.
+
+```bash
+# 1. Get the tunnel token: Zero Trust dashboard → Networks → Tunnels →
+#    select the tunnel → Edit → copy the token (eyJ...) from the connector
+#    install command. Or via CLI (after `cloudflared tunnel login`):
+#    cloudflared tunnel token <tunnel-name-or-UUID>
+
+# 2. Store it in the cluster
+kubectl create namespace cloudflared
+kubectl create secret generic cloudflared-token \
+  --from-literal=token='<TOKEN>' \
+  --namespace=cloudflared
+```
+
+If the token is ever rotated in the dashboard, recreate the secret and
+restart the deployment:
+
+```bash
+kubectl create secret generic cloudflared-token \
+  --from-literal=token='<NEW_TOKEN>' -n cloudflared \
+  --dry-run=client -o yaml | kubectl apply -f -
+kubectl rollout restart deployment cloudflared -n cloudflared
+```
+
+To expose a service: add a Public Hostname on the tunnel in the dashboard.
+The origin URL must be reachable **from inside the cluster** — use cluster
+DNS for k8s services (e.g. `http://immich-server.immich.svc.cluster.local:2283`)
+or the host IP (e.g. `http://192.168.0.108:2283`) for services still on docker.
+
 ## Future Secrets
 
 Secrets are created manually in the cluster (or via a secrets-management

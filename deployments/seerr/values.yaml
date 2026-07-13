@@ -1,0 +1,50 @@
+controllers:
+  seerr:
+    # SQLite config on a hostPath — never run two instances
+    strategy: Recreate
+    containers:
+      app:
+        image:
+          # Seerr is the merged successor of Overseerr/Jellyseerr; it
+          # auto-migrates an existing Overseerr config on first start.
+          repository: ghcr.io/seerr-team/seerr
+          tag: 3.3.0
+        env:
+          LOG_LEVEL: debug
+          TZ: Europe/Brussels
+          PORT: "5055"
+        # Seerr runs as the node user (1000) — the config dir on the host
+        # must be owned by 1000:1000 (chown before first start when
+        # migrating from the lscr overseerr container, which used uid 911).
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+
+defaultPodOptions:
+  nodeSelector:
+    kubernetes.io/hostname: eshu
+
+service:
+  app:
+    controller: seerr
+    ports:
+      http:
+        port: 5055
+
+persistence:
+  config:
+    type: hostPath
+    # Existing overseerr config — Seerr migrates it in place
+    hostPath: /home/alex/.config/overseerr
+    globalMounts:
+      # The official seerr image keeps its config in /app/config
+      # (the lscr overseerr image used /config)
+      - path: /app/config
