@@ -19,10 +19,11 @@ spec:
   # Run up to 3 renovate jobs concurrently
   parallelism: 3
 
-  # Fills RENOVATE_PLATFORM / RENOVATE_ENDPOINT
+  # Fills RENOVATE_PLATFORM / RENOVATE_ENDPOINT. Omit `endpoint` for
+  # github.com — the operator defaults to https://api.github.com and uses
+  # the value verbatim (a trailing slash breaks its token URL with a 404).
   provider:
     name: github
-    endpoint: https://api.github.com/
 
   # The operator generates RENOVATE_TOKEN from the GitHub App credentials
   githubAppReference:
