@@ -14,11 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-            persist-credentials: false
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v47
         with:
           files: renovate.json5
 
@@ -84,7 +85,7 @@ jobs:
               argocd.argoproj.io/secret-type: repo-creds
           stringData:
             url: https://github.com/${{ github.repository }}
-            password: ${{ secrets.GITHUB_TOKEN }}  ⬅️ Short-lived GitHub Token
+            password: ${{ secrets.GITHUB_TOKEN }}
             username: not-used
           EOF
 
