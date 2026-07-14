@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`immich.nagelkerke.net`)
+    - match: Host(`immichk8s.nagelkerke.net`)
       kind: Rule
       services:
         - name: immich-server
