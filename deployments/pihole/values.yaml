@@ -40,9 +40,14 @@ dnsmasq:
     - address=/renovate.nagelkerke.net/192.168.0.243
     - address=/sonarr.nagelkerke.net/192.168.0.243
     - address=/radarr.nagelkerke.net/192.168.0.243
-    - address=/seerr.nagelkerke.net/192.168.0.243
     - address=/sabnzbd.nagelkerke.net/192.168.0.243
-    - address=/immich.nagelkerke.net/192.168.0.243
+    # Local-only aliases for the publicly exposed apps (the public names
+    # seerr/immich resolve via Cloudflare everywhere, incl. on the LAN —
+    # no split horizon)
+    - address=/seer.nagelkerke.net/192.168.0.243
+    - address=/immichk8s.nagelkerke.net/192.168.0.243
+    # Omada controller (OC200)
+    - address=/omada.nagelkerke.net/192.168.0.9
 
 resources:
   requests:
