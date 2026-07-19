@@ -46,6 +46,7 @@ dnsmasq:
     # no split horizon)
     - address=/seer.nagelkerke.net/192.168.0.243
     - address=/immichk8s.nagelkerke.net/192.168.0.243
+    - address=/ha.nagelkerke.net/192.168.0.243
     # Omada controller (OC200)
     - address=/omada.nagelkerke.net/192.168.0.9
 
