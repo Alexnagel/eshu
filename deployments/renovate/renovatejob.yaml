@@ -37,10 +37,11 @@ spec:
       value: "false"
     - name: RENOVATE_REQUIRE_CONFIG
       value: "optional"
-    - name: RENOVATE_USERNAME
-      value: "eshu-renovate[bot]"
-    - name: RENOVATE_GIT_AUTHOR
-      value: "eshu-renovate[bot] <eshu-renovate[bot]@users.noreply.github.com>"
+    # Do NOT set RENOVATE_USERNAME / RENOVATE_GIT_AUTHOR here: with GitHub
+    # App auth Renovate uses platform commits, where GitHub assigns the
+    # canonical bot identity (257873871+eshu-renovate[bot]@users.noreply.
+    # github.com). A mismatching manual gitAuthor makes Renovate treat its
+    # own commits as foreign → every PR gets stuck as "edited/blocked".
 
   # Resource limits for renovate jobs
   resources:
