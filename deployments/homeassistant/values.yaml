@@ -39,15 +39,14 @@ controllers:
         env:
           # Only the HA integration on this host needs to reach it
           LISTEN_ADDRESS: 127.0.0.1
+        # No TCP probes: with the loopback-only bind, kubelet probes (which
+        # dial the pod/host IP) can never connect. A crashed process exits
+        # the container and gets restarted regardless.
         probes:
           readiness:
-            enabled: true
-            custom: true
-            spec:
-              tcpSocket:
-                port: 5580
-              initialDelaySeconds: 10
-              periodSeconds: 10
+            enabled: false
+          liveness:
+            enabled: false
         resources:
           requests:
             cpu: 50m
