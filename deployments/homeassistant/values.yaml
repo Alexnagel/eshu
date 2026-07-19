@@ -26,6 +26,36 @@ controllers:
             cpu: 2000m
             memory: 2Gi
 
+  # Matter controller server (matter.js based — successor of the archived
+  # python-matter-server). HA's Matter integration connects to it at
+  # ws://localhost:5580/ws (both pods use host networking).
+  matter-server:
+    strategy: Recreate
+    containers:
+      app:
+        image:
+          repository: ghcr.io/matter-js/matterjs-server
+          tag: 1.2.7
+        env:
+          # Only the HA integration on this host needs to reach it
+          LISTEN_ADDRESS: 127.0.0.1
+        probes:
+          readiness:
+            enabled: true
+            custom: true
+            spec:
+              tcpSocket:
+                port: 5580
+              initialDelaySeconds: 10
+              periodSeconds: 10
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+
 defaultPodOptions:
   # Host networking so HA can do mDNS/SSDP discovery and reach IoT
   # devices on the LAN directly (the k8s pod network would hide them).
@@ -45,5 +75,19 @@ persistence:
     accessMode: ReadWriteOnce
     size: 5Gi
     storageClass: local-path
-    globalMounts:
-      - path: /config
+    advancedMounts:
+      homeassistant:
+        app:
+          - path: /config
+  # Matter fabric credentials — losing this means re-commissioning
+  # every Matter device. PVC is defined in matter-data-pvc.yaml as a raw
+  # manifest: a second chart-templated PVC would rename the existing
+  # `homeassistant` config claim (the chart only suffixes claim names
+  # when it templates more than one).
+  matter-data:
+    type: persistentVolumeClaim
+    existingClaim: homeassistant-matter-data
+    advancedMounts:
+      matter-server:
+        app:
+          - path: /data
