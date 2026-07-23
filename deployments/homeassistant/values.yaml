@@ -22,9 +22,14 @@ controllers:
           requests:
             cpu: 250m
             memory: 512Mi
+            # ZBT-2 Zigbee coordinator, provided (with device-cgroup access,
+            # no privileged) by the generic-device-plugin DaemonSet. Appears
+            # in the container at /dev/zigbee — point ZHA there.
+            devic.es/zigbee: "1"
           limits:
             cpu: 2000m
             memory: 2Gi
+            devic.es/zigbee: "1"
 
   # Matter controller server (matter.js based — successor of the archived
   # python-matter-server). HA's Matter integration connects to it at
