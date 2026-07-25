@@ -18,8 +18,9 @@ command -v helm >/dev/null || { echo "helm not found" >&2; exit 1; }
 command -v kubeconform >/dev/null || { echo "kubeconform not found" >&2; exit 1; }
 command -v yq >/dev/null || { echo "yq not found" >&2; exit 1; }
 
+pushd pull-request
 # ── 1. Render every helm-chart source in applications/*/application.yaml ──
-for app in pull-request/applications/*/application.yaml pull-request/app-of-apps.yaml; do
+for app in applications/*/application.yaml app-of-apps.yaml; do
   name=$(yq -r '.metadata.name' "$app")
   ns=$(yq -r '.spec.destination.namespace // "default"' "$app")
 
