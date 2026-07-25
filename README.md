@@ -18,6 +18,7 @@ Application deploys everything else.
 │   ├── metallb-config/       #   MetalLB IP pool + L2Advertisement
 │   ├── nvidia-device-plugin/ #   NVIDIA device plugin (GPU scheduling)
 │   ├── traefik/              #   Traefik ingress + ACME/Cloudflare TLS
+│   ├── homeassistant/        #   Home Assistant (home automation)
 │   ├── immich/               #   Immich photo library (+ dedicated Postgres)
 │   ├── pihole/               #   Pi-hole DNS
 │   ├── plex/                 #   Plex Media Server (GPU transcoding)

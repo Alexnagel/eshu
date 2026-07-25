@@ -66,7 +66,7 @@ jobs:
           kubeconform-version: '0.7.0'
 
       - name: Render all charts with pinned versions and repo values
-        run: ./scripts/validate-manifests.sh
+        run: ./pull-request/scripts/validate-manifests.sh
 
       - name: Checkout main
         uses: actions/checkout@v6
