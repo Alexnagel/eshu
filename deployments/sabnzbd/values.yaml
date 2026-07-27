@@ -5,7 +5,7 @@ controllers:
     containers:
       app:
         image:
-          repository: lscr.io/linuxserver/sabnzbd
+          repository: ghcr.io/linuxserver/sabnzbd
           tag: 5.0.4-ls261
         env:
           PUID: "1000"
