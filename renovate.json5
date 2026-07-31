@@ -36,6 +36,16 @@
   "packageRules": [
     {"matchDatasources": ["helm"], "groupName": "Helm charts"},
     {"matchUpdateTypes": ["major"], "automerge": false},
+    // Postgres majors are NOT drop-in: the server refuses to start on a data
+    // directory created by a different major version. Upgrading requires a
+    // dump/restore of the data first, so never propose it as a routine bump.
+    // (A merged 14→16 PR took Immich down for 4 days.)
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["/^ghcr\\.io/immich-app/postgres$/"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
     // LinuxServer images are referenced at ghcr.io (not the lscr.io redirect,
     // which Renovate can't list tags on). Their tags are `X.Y.Z[.build]-lsNNN`,
     // so give Renovate a versioning scheme that sorts the -lsNNN suffix.
