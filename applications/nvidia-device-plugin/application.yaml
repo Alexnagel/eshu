@@ -16,6 +16,17 @@ spec:
     helm:
       values: |
         runtimeClassName: nvidia
+        # Charts >= 0.15 add a REQUIRED nodeAffinity for NFD-style labels
+        # (feature.node.kubernetes.io/pci-10de.present, nvidia.com/gpu.present).
+        # We don't run Node Feature Discovery, so those labels never exist and
+        # the DaemonSet silently drops to 0 desired pods → the GPU stops being
+        # advertised → GPU workloads become unschedulable. Target the GPU node
+        # directly instead of clearing this by hand-labelling the node.
+        # NOTE: must be `null`, not `{}` — Helm deep-merges maps, so an empty
+        # map leaves the chart's default affinity intact.
+        affinity: null
+        nodeSelector:
+          kubernetes.io/hostname: eshu
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
