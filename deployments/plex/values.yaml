@@ -56,7 +56,14 @@ pms:
   resources:
     limits:
       cpu: 4000m
-      memory: 4Gi
+      # NO memory limit — deliberate, matching the docker-compose setup.
+      # In cgroup v2 the page cache from reading media counts toward
+      # memory.max, so streaming a 60-100GB 4K remux fills the cgroup fast.
+      # With a 4Gi cap it hit the ceiling 289 times: the kernel then reclaims
+      # the very buffers Plex is streaming from, thrashing I/O until the
+      # client times out ("playback error") — no OOM kill, no pod restart,
+      # which is why it looked like a network problem. Page cache is
+      # reclaimable node-wide, so leaving this unbounded is safe here.
       nvidia.com/gpu: 1
       # Caps the chart's unbounded /transcode emptyDir (counts against
       # pod ephemeral storage) so a transcode spike can't fill the node
@@ -64,7 +71,8 @@ pms:
       ephemeral-storage: 25Gi
     requests:
       cpu: 1000m
-      memory: 2Gi
+      # Reserved for scheduling; actual usage may exceed this (Burstable).
+      memory: 3Gi
       nvidia.com/gpu: 1
       ephemeral-storage: 1Gi
 
