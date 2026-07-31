@@ -1,0 +1,60 @@
+controllers:
+  recyclarr:
+    type: cronjob
+    cronjob:
+      # Nightly sync; TRaSH guide changes land within a day.
+      schedule: "0 4 * * *"
+      concurrencyPolicy: Forbid
+      successfulJobsHistory: 1
+      failedJobsHistory: 3
+    containers:
+      app:
+        image:
+          repository: ghcr.io/recyclarr/recyclarr
+          tag: 8.7.0
+        args:
+          - sync
+        env:
+          TZ: Europe/Brussels
+          RADARR_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: recyclarr-api-keys
+                key: radarr
+          SONARR_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: recyclarr-api-keys
+                key: sonarr
+        resources:
+          requests:
+            cpu: 25m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+
+defaultPodOptions:
+  securityContext:
+    # The recyclarr image runs as uid/gid 1000; make the emptyDir writable.
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+
+persistence:
+  # Recyclarr's app data (state, logs, downloaded guide cache). Ephemeral —
+  # it re-fetches the guides on each run.
+  config:
+    type: emptyDir
+    advancedMounts:
+      recyclarr:
+        app:
+          - path: /config
+  # Nested inside /config so Recyclarr auto-discovers it as a config dir.
+  configs:
+    type: configMap
+    name: recyclarr-config
+    advancedMounts:
+      recyclarr:
+        app:
+          - path: /config/configs

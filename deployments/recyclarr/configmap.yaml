@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: recyclarr-config
+  namespace: media
+data:
+  # Mounted at /config/configs/ — Recyclarr auto-loads every YAML file there.
+  # Templates come from https://github.com/recyclarr/config-templates
+  # (TRaSH Guides). Max-quality tier: 4K remuxes for movies, 2160p WEB for TV.
+  trash.yml: |
+    radarr:
+      main:
+        base_url: http://radarr.media.svc.cluster.local:7878
+        api_key: !env_var RADARR_API_KEY
+        # Keep Radarr in sync with the guide: drop/replace formats that
+        # Recyclarr manages, so removals in TRaSH propagate here too.
+        delete_old_custom_formats: true
+        replace_existing_custom_formats: true
+        include:
+          - template: radarr-quality-definition-movie
+          - template: radarr-quality-profile-remux-web-2160p
+          - template: radarr-custom-formats-remux-web-2160p
+
+    sonarr:
+      main:
+        base_url: http://sonarr.media.svc.cluster.local:8989
+        api_key: !env_var SONARR_API_KEY
+        delete_old_custom_formats: true
+        replace_existing_custom_formats: true
+        include:
+          - template: sonarr-quality-definition-series
+          - template: sonarr-v4-quality-profile-web-2160p
+          - template: sonarr-v4-custom-formats-web-2160p
