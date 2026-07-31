@@ -7,8 +7,11 @@
   ],
   "timezone": "Europe/Amsterdam",
   "schedule": ["every weekend"],
-  "prConcurrentLimit": 3,
-  "prHourlyLimit": 2,
+  // Homelab: don't throttle our own update PRs. 0 = unlimited/hour (fixes
+  // the "rate-limited" dashboard section); keep a generous concurrent cap
+  // so a big backlog doesn't open a wall of PRs all at once.
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 0,
   "commitMessagePrefix": "⬆️",
   "semanticCommits": "enabled",
   "dependencyDashboard": true,

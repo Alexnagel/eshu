@@ -26,6 +26,7 @@ Application deploys everything else.
 │   ├── radarr/               #   Radarr (movies)      → media namespace
 │   ├── seerr/                #   Seerr (requests)     → media namespace
 │   ├── sabnzbd/              #   SABnzbd (usenet)     → media namespace
+│   ├── recyclarr/            #   TRaSH Guides sync (CronJob) → media namespace
 │   └── renovate/             #   Renovate operator
 └── deployments/              # Helm values + extra manifests per component (the "how")
     └── <app>/
@@ -86,6 +87,7 @@ These are intentionally **not** in Git. See [SECRETS.md](SECRETS.md) for details
 | `renovate-github-app` | `renovate` | GitHub App creds for the Renovate operator |
 | `cloudflared-token` | `cloudflared` | Cloudflare Tunnel connector token (public access) |
 | `immich-db` | `immich` | Immich Postgres password (same as compose `.env`) |
+| `recyclarr-api-keys` | `media` | Radarr + Sonarr API keys for the TRaSH Guides sync |
 
 ### 3. Deploy the root Application
 

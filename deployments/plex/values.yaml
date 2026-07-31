@@ -6,6 +6,11 @@ service:
   port: 32400
   annotations:
     metallb.universe.tf/loadBalancerIPs: "192.168.0.242"
+  # Preserve the client source IP. With the default (Cluster) every client
+  # is SNAT'd to the CNI gateway (10.42.0.1), so Plex can't match them
+  # against its LAN networks (192.168.0.0/24) and treats ALL clients as
+  # remote — applying internet bitrate caps and forcing transcodes.
+  externalTrafficPolicy: Local
 
 ingress:
   enabled: false
