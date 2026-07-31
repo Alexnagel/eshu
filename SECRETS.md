@@ -254,6 +254,25 @@ kubectl create secret generic immich-db \
   --namespace=immich
 ```
 
+## Recyclarr: Radarr / Sonarr API Keys
+
+Recyclarr syncs TRaSH Guides custom formats and quality profiles into
+Radarr and Sonarr through their APIs, so it needs both API keys.
+
+Find each key in the app's UI under **Settings → General → API Key**
+(or in its `config.xml` on the config volume), then:
+
+```bash
+kubectl create secret generic recyclarr-api-keys \
+  --from-literal=radarr='<RADARR_API_KEY>' \
+  --from-literal=sonarr='<SONARR_API_KEY>' \
+  --namespace=media
+```
+
+The CronJob (`deployments/recyclarr/values.yaml`) reads them as the
+`RADARR_API_KEY` / `SONARR_API_KEY` env vars referenced by
+`deployments/recyclarr/configmap.yaml`.
+
 ## Future Secrets
 
 Secrets are created manually in the cluster (or via a secrets-management
