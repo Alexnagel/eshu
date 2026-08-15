@@ -20,7 +20,7 @@ spec:
         runAsUser: 65532
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:2026.7.3
+          image: cloudflare/cloudflared:2026.8.2
           # Remotely-managed tunnel: hostname → origin routing is configured
           # in the Cloudflare Zero Trust dashboard (Networks → Tunnels), not
           # in this repo. Origins must be reachable from inside the cluster
