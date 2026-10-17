@@ -12,7 +12,7 @@ spec:
   sources:
     - repoURL: https://helm.mogenius.com/public
       chart: renovate-operator
-      targetRevision: 6.3.0
+      targetRevision: 6.5.1
       helm:
         releaseName: renovate-operator
         valueFiles:
