@@ -14,7 +14,7 @@ spec:
     - "Alexnagel/*"
 
   # Renovate Docker image
-  image: renovate/renovate:44.65.5
+  image: renovate/renovate:44.181.0
 
   # Run up to 3 renovate jobs concurrently
   parallelism: 3
