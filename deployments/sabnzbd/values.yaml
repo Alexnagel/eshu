@@ -6,7 +6,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/linuxserver/sabnzbd
-          tag: 5.0.4-ls261
+          tag: 5.1.3-ls278
         env:
           PUID: "1000"
           PGID: "1000"
