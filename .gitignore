@@ -9,3 +9,14 @@ argocd-repo-github-app.yaml
 
 # Optional: ignore all secrets directories
 secrets/
+
+# Cloudflare DDNS worker — holds the CF API token / auth token.
+# Kept out of the repo deliberately; the repo is public.
+worker.js
+
+# Environment files and cluster credentials
+.env
+*.env
+!*.env.example
+kubeconfig
+k3s.yaml

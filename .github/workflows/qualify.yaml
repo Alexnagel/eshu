@@ -7,6 +7,25 @@ on:
       - main
 
 jobs:
+  # Fails the build if a credential is committed. Scans the FULL history
+  # (fetch-depth: 0), so a secret added in any commit is caught before it
+  # can be published — this repo is public, so anything pushed is scraped
+  # within minutes and must be treated as burned.
+  secret-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   validate:
     name: Qualify
     runs-on: ubuntu-latest
