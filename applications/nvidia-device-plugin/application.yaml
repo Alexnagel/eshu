@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://nvidia.github.io/k8s-device-plugin
     chart: nvidia-device-plugin
-    targetRevision: 0.20.0
+    targetRevision: 0.20.1
     helm:
       values: |
         runtimeClassName: nvidia
