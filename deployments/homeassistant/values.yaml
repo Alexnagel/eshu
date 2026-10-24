@@ -40,7 +40,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/matter-js/matterjs-server
-          tag: 1.4.0
+          tag: 1.5.5
         env:
           # Only the HA integration on this host needs to reach it
           LISTEN_ADDRESS: 127.0.0.1
