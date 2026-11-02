@@ -23,7 +23,7 @@
     "managerFilePatterns": ["/\\.github/workflows/.+\\.ya?ml$/"]
   },
   // Tracks tool versions annotated with `# renovate: datasource=... depName=...`
-  // comments in workflows (kubeconform, argocd-diff-preview)
+  // comments in workflows (kubeconform)
   "customManagers": [
     {
       "customType": "regex",
