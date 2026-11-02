@@ -2,7 +2,6 @@ image:
   # repository is the chart default; set explicitly so Renovate can track the tag
   registry: index.docker.io
   repository: plexinc/pms-docker
-  tag: 1.43.2.10687-563d026ea
   tag: 1.43.5.11079-b3b13e506
 
 service:
