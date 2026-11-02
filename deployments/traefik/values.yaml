@@ -2,7 +2,7 @@ deployment:
   replicas: 1
   initContainers:
     - name: volume-permissions
-      image: busybox:latest
+      image: busybox:1.38.0
       command: ["sh", "-c", "touch /data/acme.json; chmod -v 600 /data/acme.json"]
       volumeMounts:
       - mountPath: /data

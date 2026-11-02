@@ -5,6 +5,9 @@ controllers:
       main:
         image:
           # Immich v3 — see https://immich.app/blog/v3-migration
+          # repository is only here so Renovate can track the tag; the chart
+          # overrides it for machine-learning.
+          repository: ghcr.io/immich-app/immich-server
           tag: v3.0.2
         env:
           DB_HOSTNAME: immich-postgres
