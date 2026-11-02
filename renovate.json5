@@ -16,6 +16,9 @@
   "semanticCommits": "enabled",
   "dependencyDashboard": true,
   "labels": ["dependencies"],
+  // Automerge everything except majors (see the major rule in packageRules,
+  // which switches it back off). Merges only once the qualify checks pass.
+  "automerge": true,
   "argocd": {"managerFilePatterns": ["/applications/.+\\.yaml$/"]},
   "kubernetes": {"managerFilePatterns": ["/deployments/.+\\.yaml$/"]},
   "helm-values": {"managerFilePatterns": ["/deployments/.+/values\\.yaml$/"]},
