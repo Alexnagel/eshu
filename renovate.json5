@@ -19,6 +19,10 @@
   // Automerge everything except majors (see the major rule in packageRules,
   // which switches it back off). Merges only once the qualify checks pass.
   "automerge": true,
+  // Merge via the API as the Renovate app instead of GitHub's native
+  // auto-merge: native auto-merge ignores ruleset bypass and would wait
+  // forever for the required approval.
+  "platformAutomerge": false,
   "argocd": {"managerFilePatterns": ["/applications/.+\\.yaml$/"]},
   "kubernetes": {"managerFilePatterns": ["/deployments/.+\\.yaml$/"]},
   "helm-values": {"managerFilePatterns": ["/deployments/.+/values\\.yaml$/"]},
