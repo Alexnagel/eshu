@@ -8,7 +8,7 @@ controllers:
           # repository is only here so Renovate can track the tag; the chart
           # overrides it for machine-learning.
           repository: ghcr.io/immich-app/immich-server
-          tag: v3.0.2
+          tag: v3.4.1
         env:
           DB_HOSTNAME: immich-postgres
           # Must match the DB_DATABASE_NAME / DB_USERNAME from the
