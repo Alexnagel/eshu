@@ -9,6 +9,14 @@ controllers:
           tag: "2026.11.2"
         env:
           TZ: Europe/Brussels
+        # Bluetooth: habluetooth needs these for its management socket and
+        # adapter recovery. BlueZ itself runs on the host (see /run/dbus
+        # mount under persistence).
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+              - NET_RAW
         probes:
           readiness:
             enabled: true
@@ -87,6 +95,15 @@ persistence:
       homeassistant:
         app:
           - path: /config
+  # Host D-Bus so HA can talk to the host's BlueZ daemon (bluetooth).
+  dbus:
+    type: hostPath
+    hostPath: /run/dbus
+    advancedMounts:
+      homeassistant:
+        app:
+          - path: /run/dbus
+            readOnly: true
   # Matter fabric credentials — losing this means re-commissioning
   # every Matter device. PVC is defined in matter-data-pvc.yaml as a raw
   # manifest: a second chart-templated PVC would rename the existing
