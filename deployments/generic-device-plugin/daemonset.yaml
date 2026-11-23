@@ -1,6 +1,7 @@
 # Advertises host devices as allocatable Kubernetes resources so pods can
 # use them WITHOUT running privileged. Here: the Nabu Casa ZBT-2 Zigbee
-# coordinator, exposed as `devic.es/zigbee`, which Home Assistant requests.
+# coordinator (`devic.es/zigbee`) and the FTDI P1 smart-meter cable
+# (`devic.es/p1`), both requested by Home Assistant.
 # (devic.es is the plugin's default resource domain.)
 apiVersion: apps/v1
 kind: DaemonSet
@@ -38,6 +39,12 @@ spec:
                 - paths:
                     - path: /dev/serial/by-id/usb-Nabu_Casa_ZBT-2_A4CB8FD2C054-if00
                       mountPath: /dev/zigbee
+            - |
+              name: p1
+              groups:
+                - paths:
+                    - path: /dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AWBTK7BV-if00-port0
+                      mountPath: /dev/p1
           resources:
             requests:
               cpu: 50m
