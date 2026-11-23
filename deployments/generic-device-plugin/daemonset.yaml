@@ -39,6 +39,8 @@ spec:
                 - paths:
                     - path: /dev/serial/by-id/usb-Nabu_Casa_ZBT-2_A4CB8FD2C054-if00
                       mountPath: /dev/zigbee
+            # every device needs its own --device flag
+            - --device
             - |
               name: p1
               groups:
