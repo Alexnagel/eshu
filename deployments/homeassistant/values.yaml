@@ -26,10 +26,14 @@ controllers:
             # no privileged) by the generic-device-plugin DaemonSet. Appears
             # in the container at /dev/zigbee — point ZHA there.
             devic.es/zigbee: "1"
+            # FTDI P1 cable for the smart meter — appears at /dev/p1, use it
+            # in the DSMR integration.
+            devic.es/p1: "1"
           limits:
             cpu: 2000m
             memory: 2Gi
             devic.es/zigbee: "1"
+            devic.es/p1: "1"
 
   # Matter controller server (matter.js based — successor of the archived
   # python-matter-server). HA's Matter integration connects to it at
