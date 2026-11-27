@@ -55,18 +55,25 @@ data:
                 value: boost
               - dps_val: timer_start_stop
                 value: timer
-          # Element is energised. Flips on/off with the heating cycle.
+      # The app's home / radiator buttons. In "home" the unit heats to the
+      # climate's room target temperature; in "radiator" it heats to the
+      # Radiator temperature below. The timer presets also report radiator.
+      # The device has no heating-action datapoint, so the climate has no
+      # hvac_action.
+      - entity: select
+        name: Heating control
+        icon: "mdi:radiator"
+        dps:
           - id: 109
             type: boolean
-            name: hvac_action
+            name: option
             mapping:
-              - dps_val: true
-                value: heating
               - dps_val: false
-                value: idle
-      # Manual radiator heat control: surface temperature setpoint, 30-60 °C.
-      # The app's "home" button (room thermostat) and the timer modes show
-      # up here as 60.
+                value: home
+              - dps_val: true
+                value: radiator
+      # Radiator surface temperature target, 30-60 °C. Only used while
+      # Heating control is "radiator".
       - entity: number
         name: Radiator temperature
         icon: "mdi:radiator"
@@ -78,12 +85,14 @@ data:
             range:
               min: 30
               max: 60
-      # DP 3 is the unit's own sensor, mounted on the radiator: it reads
-      # 37-38 °C while heating and ~25 °C when idle, well above the room
-      # temperature. So it is a sensor and not the climate's current
-      # temperature — pair the climate with a real room sensor instead.
+      # DP 3 is the temperature the unit regulates on: the radiator surface
+      # (37-38 °C when heating) in "radiator" control, or the unit's own room
+      # sensor in "home" control. That sensor sits on the radiator and reads
+      # well above the real room temperature, so it is a sensor and not the
+      # climate's current temperature — pair the climate with a real room
+      # sensor instead.
       - entity: sensor
-        name: Radiator sensor
+        name: Control temperature
         class: temperature
         category: diagnostic
         dps:
