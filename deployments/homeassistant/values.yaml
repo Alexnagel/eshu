@@ -2,6 +2,24 @@ controllers:
   homeassistant:
     # SQLite recorder DB on a single PVC — never run two instances
     strategy: Recreate
+    # Copies our custom Tuya Local device definitions (see
+    # tuya-local-devices-configmap.yaml) into the HACS-managed integration dir
+    # on the config PVC. Skipped when the integration isn't installed yet.
+    initContainers:
+      tuya-local-devices:
+        image:
+          repository: busybox
+          tag: "1.37.0"
+        command:
+          - sh
+          - -c
+          - |
+            dest=/config/custom_components/tuya_local/devices
+            if [ -d "$dest" ]; then
+              cp -v /tuya-devices/*.yaml "$dest"/
+            else
+              echo "tuya_local not installed yet, skipping"
+            fi
     containers:
       app:
         image:
@@ -17,6 +35,11 @@ controllers:
             add:
               - NET_ADMIN
               - NET_RAW
+          # The host's dbus-daemon refuses connections from containerd's
+          # default AppArmor profile ("An AppArmor policy prevents this
+          # sender..."), so HA can't reach BlueZ without this.
+          appArmorProfile:
+            type: Unconfined
         probes:
           readiness:
             enabled: true
@@ -95,6 +118,8 @@ persistence:
       homeassistant:
         app:
           - path: /config
+        tuya-local-devices:
+          - path: /config
   # Host D-Bus so HA can talk to the host's BlueZ daemon (bluetooth).
   dbus:
     type: hostPath
@@ -103,6 +128,15 @@ persistence:
       homeassistant:
         app:
           - path: /run/dbus
+            readOnly: true
+  # Custom Tuya Local device definitions, see initContainer above.
+  tuya-devices:
+    type: configMap
+    name: homeassistant-tuya-local-devices
+    advancedMounts:
+      homeassistant:
+        tuya-local-devices:
+          - path: /tuya-devices
             readOnly: true
   # Matter fabric credentials — losing this means re-commissioning
   # every Matter device. PVC is defined in matter-data-pvc.yaml as a raw

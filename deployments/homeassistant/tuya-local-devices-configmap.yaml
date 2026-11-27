@@ -1,0 +1,150 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homeassistant-tuya-local-devices
+  namespace: homeassistant
+data:
+  # Custom Tuya Local device definitions. An init container copies every file
+  # here into /config/custom_components/tuya_local/devices/ on pod start (that
+  # directory lives on the config PVC and is owned by the HACS install, so we
+  # copy instead of mounting over it — a mount would block HACS updates).
+  #
+  # After changing a definition: let Argo sync, restart the pod, then remove and
+  # re-add the device in Tuya Local (the config entry stores the definition it
+  # was created with).
+  #
+  # Datapoints were reverse-engineered by watching the device's local DPS
+  # while changing settings in the app. Not mapped: 26 / 107 (base64 weekly
+  # schedule blobs), 101, 102-104, 108, 110 (constant, purpose unknown).
+  vipera_radiator.yaml: |
+    name: Electric radiator
+    products:
+      - id: garl6njvh2yxxdiv
+        manufacturer: Vipera
+    entities:
+      - entity: climate
+        translation_key: thermostat
+        dps:
+          - id: 1
+            type: boolean
+            name: hvac_mode
+            mapping:
+              - dps_val: false
+                value: "off"
+              - dps_val: true
+                value: heat
+          # Room target temperature ("home" mode in the app, 18-25 °C).
+          - id: 106
+            type: integer
+            name: temperature
+            unit: C
+            range:
+              min: 180
+              max: 250
+            mapping:
+              - scale: 10
+          - id: 4
+            type: string
+            name: preset_mode
+            mapping:
+              - dps_val: manual
+                value: manual
+              - dps_val: week_program
+                value: program
+              - dps_val: timer_turbo
+                value: boost
+              - dps_val: timer_start_stop
+                value: timer
+          # Element is energised. Flips on/off with the heating cycle.
+          - id: 109
+            type: boolean
+            name: hvac_action
+            mapping:
+              - dps_val: true
+                value: heating
+              - dps_val: false
+                value: idle
+      # Manual radiator heat control: surface temperature setpoint, 30-60 °C.
+      # The app's "home" button (room thermostat) and the timer modes show
+      # up here as 60.
+      - entity: number
+        name: Radiator temperature
+        icon: "mdi:radiator"
+        dps:
+          - id: 2
+            type: integer
+            name: value
+            unit: C
+            range:
+              min: 30
+              max: 60
+      # DP 3 is the unit's own sensor, mounted on the radiator: it reads
+      # 37-38 °C while heating and ~25 °C when idle, well above the room
+      # temperature. So it is a sensor and not the climate's current
+      # temperature — pair the climate with a real room sensor instead.
+      - entity: sensor
+        name: Radiator sensor
+        class: temperature
+        category: diagnostic
+        dps:
+          - id: 3
+            type: integer
+            name: sensor
+            unit: C
+            class: measurement
+            mapping:
+              - scale: 10
+      - entity: lock
+        translation_key: child_lock
+        category: config
+        dps:
+          - id: 7
+            type: boolean
+            name: lock
+      # Duration used by the "boost" (timer_turbo) preset. Changing it while the
+      # preset is active restarts the countdown.
+      - entity: select
+        name: Boost duration
+        icon: "mdi:rocket-launch"
+        category: config
+        dps:
+          - id: 19
+            type: string
+            name: option
+            mapping:
+              - dps_val: "1h"
+                value: "1h"
+              - dps_val: "2h"
+                value: "2h"
+              - dps_val: "3h"
+                value: "3h"
+              - dps_val: "4h"
+                value: "4h"
+      # Duration used by the "timer" (timer_start_stop) preset.
+      - entity: select
+        name: Timer duration
+        icon: "mdi:timer-outline"
+        category: config
+        dps:
+          - id: 111
+            type: string
+            name: option
+            mapping:
+              - dps_val: "1h"
+                value: "1h"
+              - dps_val: "2h"
+                value: "2h"
+              - dps_val: "3h"
+                value: "3h"
+              - dps_val: "4h"
+                value: "4h"
+      - entity: sensor
+        name: Timer remaining
+        class: duration
+        category: diagnostic
+        dps:
+          - id: 20
+            type: integer
+            name: sensor
+            unit: min
+            class: measurement
